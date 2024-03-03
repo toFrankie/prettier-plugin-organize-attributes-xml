@@ -1,9 +1,11 @@
-### prettier-plugin-organize-attributes [![npm](https://img.shields.io/npm/v/prettier-plugin-organize-attributes)](https://www.npmjs.com/package/prettier-plugin-organize-attributes)
+### prettier-plugin-organize-attributes-xml
 
-## Organize your HTML attributes automatically with Prettier 🧼
+> Inspired by [prettier-plugin-organize-attributes](https://github.com/NiklasPor/prettier-plugin-organize-attributes).
+
+## Organize your XML attributes automatically with Prettier 🧼
 
 ```
-npm i prettier prettier-plugin-organize-attributes -D
+npm i prettier prettier-plugin-organize-attributes-xml -D
 ```
 
 - Supports Angular, Vue & HTML with **0** configuration

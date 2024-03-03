@@ -2,10 +2,12 @@ import { Parser, ParserOptions } from "prettier";
 import { parsers as htmlParsers } from "prettier/parser-html";
 import { OrganizeOptionsSort, miniorganize } from "./organize";
 import { PRESETS, PRESET_KEYS } from "./presets";
+import xmlParser from "./xml-parser";
 
 const prettierParsers = htmlParsers as any;
 
 export const parsers = {
+  xml: wrapParser(xmlParser),
   html: wrapParser(prettierParsers.html),
   vue: wrapParser(prettierParsers.vue),
   angular: wrapParser(prettierParsers.angular),
@@ -54,13 +56,13 @@ function transformPostParse(parse: Parser<any>["parse"]): Parser<any>["parse"] {
   return (text, options) =>
     transformRootNode(
       parse(text, options),
-      options as ParserOptions & PrettierPluginOrganizeAttributesParserOptions
+      options as ParserOptions & PrettierPluginOrganizeAttributesParserOptions,
     );
 }
 
 function transformRootNode(
   node: HTMLNode,
-  options: ParserOptions & PrettierPluginOrganizeAttributesParserOptions
+  options: ParserOptions & PrettierPluginOrganizeAttributesParserOptions,
 ) {
   const sort: OrganizeOptionsSort =
     options.attributeSort === "NONE" ? false : options.attributeSort;
@@ -76,6 +78,7 @@ function transformRootNode(
         groups.push(PRESET_KEYS.$VUE);
         break;
       case "html":
+      case "xml":
       default:
         groups.push(PRESET_KEYS.$HTML);
     }
@@ -89,7 +92,7 @@ function transformNode(
   node: HTMLNode,
   groups: string[],
   sort: OrganizeOptionsSort,
-  ignoreCase = true
+  ignoreCase = true,
 ): void {
   if (node.attrs) {
     node.attrs = miniorganize(node.attrs, {
@@ -102,7 +105,7 @@ function transformNode(
   }
 
   node.children?.forEach((child) =>
-    transformNode(child, groups, sort, ignoreCase)
+    transformNode(child, groups, sort, ignoreCase),
   );
 }
 
